@@ -7,7 +7,7 @@ os: Windows Server 2012 R2
 # Platform.
 platform: x64
 
-clone_folder: c:\gopath\src\github.com\minio\sha256-simd
+clone_folder: c:\gopath\src\github.com\AidosKuneen\sha256-simd
 
 # environment variables
 environment:
