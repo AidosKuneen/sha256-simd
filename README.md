@@ -1,3 +1,5 @@
+[![GoDoc](https://godoc.org/github.com/AidosKuneen/sha256-simd?status.svg)](https://godoc.org/github.com/AidosKuneen/sha256-simd)
+
 # sha256-simd
 
 Accelerate SHA256 computations in pure Go for both Intel (AVX2, AVX, SSE) as well as ARM (arm64) platforms.
