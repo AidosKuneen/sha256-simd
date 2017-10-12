@@ -40,5 +40,5 @@ func blockArmGo(dig *digest, p []byte) {
 }
 
 func blockArmGoDirect(h []uint32, p []byte) {
-	blockArm(h[:], p[:])
+	blockArm(h, p)
 }

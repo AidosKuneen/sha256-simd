@@ -50,13 +50,13 @@ func blockSsseGo(dig *digest, p []byte) {
 }
 
 func blockAvxGoDirect(h []uint32, p []byte) {
-	blockAvx(h[:], p[:], 0, 0, 0, 0)
+	blockAvx(h, p, 0, 0, 0, 0)
 }
 
 func blockAvx2GoDirect(h []uint32, p []byte) {
-	blockAvx2(h[:], p[:])
+	blockAvx2(h, p)
 }
 
 func blockSsseGoDirect(h []uint32, p []byte) {
-	blockSsse(h[:], p[:], 0, 0, 0, 0)
+	blockSsse(h, p, 0, 0, 0, 0)
 }
