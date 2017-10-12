@@ -2,6 +2,7 @@
 
 /*
  * Minio Cloud Storage, (C) 2016 Minio, Inc.
+ * Aidos Developer, 2017
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +19,11 @@
 
 package sha256
 
-func blockArmGo(dig *digest, p []byte)  {}
-func blockAvx2Go(dig *digest, p []byte) {}
-func blockAvxGo(dig *digest, p []byte)  {}
-func blockSsseGo(dig *digest, p []byte) {}
+func blockArmGo(dig *digest, p []byte)       {}
+func blockAvx2Go(dig *digest, p []byte)      {}
+func blockAvxGo(dig *digest, p []byte)       {}
+func blockSsseGo(dig *digest, p []byte)      {}
+func blockArmGoDirect(h []uint32, p []byte)  {}
+func blockAvx2GoDirect(h []uint32, p []byte) {}
+func blockAvxGoDirect(h []uint32, p []byte)  {}
+func blockSsseGoDirect(h []uint32, p []byte) {}

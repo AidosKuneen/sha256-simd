@@ -1,5 +1,6 @@
 /*
  * Minio Cloud Storage, (C) 2016 Minio, Inc.
+ * Aidos Developer, 2017
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,6 +63,26 @@ func (d *digest) Reset() {
 	d.len = 0
 }
 
+//Block calcs 1 block in sha256
+func Block(h []uint32, p []byte) {
+	is386bit := runtime.GOARCH == "386"
+	isARM := runtime.GOARCH == "arm"
+	if is386bit || isARM {
+		blockGenericDirect(h, p)
+	}
+	switch !is386bit && !isARM {
+	case avx2:
+		blockAvx2GoDirect(h, p)
+	case avx:
+		blockAvxGoDirect(h, p)
+	case ssse3:
+		blockSsseGoDirect(h, p)
+	case armSha:
+		blockArmGoDirect(h, p)
+	default:
+		blockGenericDirect(h, p)
+	}
+}
 func block(dig *digest, p []byte) {
 	is386bit := runtime.GOARCH == "386"
 	isARM := runtime.GOARCH == "arm"
