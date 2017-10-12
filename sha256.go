@@ -31,14 +31,18 @@ const BlockSize = 64
 
 const (
 	chunk = 64
-	init0 = 0x6A09E667
-	init1 = 0xBB67AE85
-	init2 = 0x3C6EF372
-	init3 = 0xA54FF53A
-	init4 = 0x510E527F
-	init5 = 0x9B05688C
-	init6 = 0x1F83D9AB
-	init7 = 0x5BE0CD19
+)
+
+//initial values for SHA-256
+const (
+	Init0 = 0x6A09E667
+	Init1 = 0xBB67AE85
+	Init2 = 0x3C6EF372
+	Init3 = 0xA54FF53A
+	Init4 = 0x510E527F
+	Init5 = 0x9B05688C
+	Init6 = 0x1F83D9AB
+	Init7 = 0x5BE0CD19
 )
 
 // digest represents the partial evaluation of a checksum.
@@ -51,14 +55,14 @@ type digest struct {
 
 // Reset digest back to default
 func (d *digest) Reset() {
-	d.h[0] = init0
-	d.h[1] = init1
-	d.h[2] = init2
-	d.h[3] = init3
-	d.h[4] = init4
-	d.h[5] = init5
-	d.h[6] = init6
-	d.h[7] = init7
+	d.h[0] = Init0
+	d.h[1] = Init1
+	d.h[2] = Init2
+	d.h[3] = Init3
+	d.h[4] = Init4
+	d.h[5] = Init5
+	d.h[6] = Init6
+	d.h[7] = Init7
 	d.nx = 0
 	d.len = 0
 }
