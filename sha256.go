@@ -19,6 +19,7 @@ package sha256
 
 import (
 	"crypto/sha256"
+	"encoding/binary"
 	"hash"
 	"runtime"
 )
@@ -87,6 +88,14 @@ func Block(h []uint32, p []byte) {
 		blockGenericDirect(h, p)
 	}
 }
+
+//Int2Bytes converts internal states of SHA-256 ([]uint32)  to bytes array
+func Int2Bytes(h []uint32, digest []byte) {
+	for i, s := range h {
+		binary.BigEndian.PutUint32(digest[i<<2:], s)
+	}
+}
+
 func block(dig *digest, p []byte) {
 	is386bit := runtime.GOARCH == "386"
 	isARM := runtime.GOARCH == "arm"
