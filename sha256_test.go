@@ -50,6 +50,7 @@
 package sha256
 
 import (
+	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
 	"testing"
@@ -1139,6 +1140,16 @@ func TestBlockSize(t *testing.T) {
 	c := New()
 	if got := c.BlockSize(); got != BlockSize {
 		t.Errorf("BlockSize = %d want %d", got, BlockSize)
+	}
+}
+
+func TestD32(t *testing.T) {
+	a := make([]byte, 32)
+	copy(a, "This is a test of SHA256 data 32.")
+	golden := sha256.Sum256(a)
+	trial := Sum256D32(a)
+	if golden != trial {
+		t.Error("invalid Sum256D32")
 	}
 }
 

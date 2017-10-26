@@ -136,6 +136,29 @@ func Sum256(data []byte) [Size]byte {
 	return d.checkSum()
 }
 
+//Sum256D32 returns sha256 of 256 bytes data.
+func Sum256D32(data []byte) [Size]byte {
+	stat := []uint32{
+		Init0,
+		Init1,
+		Init2,
+		Init3,
+		Init4,
+		Init5,
+		Init6,
+		Init7,
+	}
+	buf := make([]byte, 64)
+	copy(buf, data)
+	buf[32] = 0x80
+	buf[62] = 0x01
+	// buf[63] = 0x00
+	Block(stat, buf)
+	var out [Size]byte
+	Int2Bytes(stat, out[:])
+	return out
+}
+
 // Return size of checksum
 func (d *digest) Size() int { return Size }
 
