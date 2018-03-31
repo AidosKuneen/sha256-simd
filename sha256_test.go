@@ -53,6 +53,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
+	"sync"
 	"testing"
 )
 
@@ -1152,7 +1153,68 @@ func TestD32(t *testing.T) {
 		t.Error("invalid Sum256D32")
 	}
 }
+func BenchmarkD32(b *testing.B) {
+	a := make([]byte, 32)
+	copy(a, "This is a test of SHA256 data 32.")
+	stat := make([]uint32, 64)
+	buf := make([]byte, 64)
+	var wg sync.WaitGroup
+	wg.Add(1)
+	go func() {
+		for i := 0; i < 1000000000000000; i++ {
+			Block(stat, buf)
+		}
+		wg.Done()
+	}()
+	wg.Add(1)
+	go func() {
+		for i := 0; i < 1000000000000000; i++ {
+			Block(stat, buf)
+		}
+		wg.Done()
+	}()
+	wg.Wait()
+}
+func TestBlock(t *testing.T) {
+	 a :=[]uint32 {
+        2596996162,
+        4039455774,
+        2854263694,
+        1879968118,
+        1823804162,
+        2949882636,
+        281908850,
+        672245080,
+    }
+    result := []uint32{
+        3781998499,
+        2227531575,
+        1369889215,
+        2218625936,
+        2936920887,
+        2748486214,
+        2537584648,
+        2662753435,
+    };
 
+    msg := []uint8 {
+        160, 7, 41, 57, 72, 127, 105, 153,
+        235, 157, 24, 164, 71, 132, 4, 93,
+        135, 243, 198, 124, 242, 39, 70, 233,
+        149, 175, 90, 37, 54, 121, 81, 186,
+        162, 255, 108, 212, 113, 196, 131, 241,
+        95, 185, 11, 173, 179, 124, 88, 33,
+        182, 217, 85, 38, 164, 26, 149, 4,
+        104, 11, 78, 124, 139, 118, 58, 27,
+    };
+
+		blockGenericDirect(a,msg)
+	for i:=range a{
+		if a[i]!=result[i]{
+			t.Fail("unmatch")
+		}
+	}
+}
 var bench = New()
 var buf = make([]byte, 1024*1024)
 
