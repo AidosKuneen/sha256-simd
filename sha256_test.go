@@ -53,7 +53,6 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
-	"sync"
 	"testing"
 )
 
@@ -1154,26 +1153,12 @@ func TestD32(t *testing.T) {
 	}
 }
 func BenchmarkD32(b *testing.B) {
-	a := make([]byte, 32)
-	copy(a, "This is a test of SHA256 data 32.")
-	stat := make([]uint32, 64)
+	stat := make([]uint32, 8)
 	buf := make([]byte, 64)
-	var wg sync.WaitGroup
-	wg.Add(1)
-	go func() {
-		for i := 0; i < 1000000000000000; i++ {
+	b.ResetTimer()
+		for i := 0; i < b.N; i++ {
 			Block(stat, buf)
 		}
-		wg.Done()
-	}()
-	wg.Add(1)
-	go func() {
-		for i := 0; i < 1000000000000000; i++ {
-			Block(stat, buf)
-		}
-		wg.Done()
-	}()
-	wg.Wait()
 }
 func TestBlock(t *testing.T) {
 	 a :=[]uint32 {
@@ -1211,7 +1196,7 @@ func TestBlock(t *testing.T) {
 		blockGenericDirect(a,msg)
 	for i:=range a{
 		if a[i]!=result[i]{
-			t.Fail("unmatch")
+			t.Error("unmatch")
 		}
 	}
 }

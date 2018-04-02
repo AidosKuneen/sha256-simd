@@ -21,7 +21,6 @@ import (
 	"crypto/sha256"
 	"encoding/binary"
 	"hash"
-	"runtime"
 )
 
 // Size - The size of a SHA256 checksum in bytes.
@@ -70,12 +69,7 @@ func (d *digest) Reset() {
 
 //Block calcs 1 block in sha256
 func Block(h []uint32, p []byte) {
-	is386bit := runtime.GOARCH == "386"
-	isARM := runtime.GOARCH == "arm"
-	if is386bit || isARM {
-		blockGenericDirect(h, p)
-	}
-	switch !is386bit && !isARM {
+	switch true {
 	case avx2:
 		blockAvx2GoDirect(h, p)
 	case avx:
@@ -89,20 +83,8 @@ func Block(h []uint32, p []byte) {
 	}
 }
 
-//Int2Bytes converts internal states of SHA-256 ([]uint32)  to bytes array
-func Int2Bytes(h []uint32, digest []byte) {
-	for i, s := range h {
-		binary.BigEndian.PutUint32(digest[i<<2:], s)
-	}
-}
-
 func block(dig *digest, p []byte) {
-	is386bit := runtime.GOARCH == "386"
-	isARM := runtime.GOARCH == "arm"
-	if is386bit || isARM {
-		blockGeneric(dig, p)
-	}
-	switch !is386bit && !isARM {
+	switch true {
 	case avx2:
 		blockAvx2Go(dig, p)
 	case avx:
@@ -113,6 +95,13 @@ func block(dig *digest, p []byte) {
 		blockArmGo(dig, p)
 	default:
 		blockGeneric(dig, p)
+	}
+}
+
+//Int2Bytes converts internal states of SHA-256 ([]uint32)  to bytes array
+func Int2Bytes(h []uint32, digest []byte) {
+	for i, s := range h {
+		binary.BigEndian.PutUint32(digest[i<<2:], s)
 	}
 }
 
